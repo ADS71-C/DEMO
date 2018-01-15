@@ -1,0 +1,83 @@
+<div *ngIf="showInfo">
+  <div class="card">
+    <div class="card-body">
+      <div class="card-title"><h1 class="display-4">Sociale Ontsluiting</h1></div>
+      <div class="card-subtitle">  <p class="lead">Quantifing information from messages.</p></div>
+      <img class="card-img-top" src="assets/images/factory.png" alt="Card image cap">
+      <div class="card-text">
+        <p>The following is a live demo using streaming twitter data. The data is scored on the probability of the tweet being about sickness.</p>
+      </div>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">For additional statistics see: <a href="https://rickrongen.nl/snob/#/analysis/5a5350d41aef69b5a4562a1d" target="_blank">the dashboard</a></li>
+      <li class="list-group-item">For documentation see: <a href="https://smug.readthedocs.io/en/docs/" target="_blank">Read the Docs</a></li>
+      <li class="list-group-item">For source code see: <a href="https://github.com/ADS71-C/SMUG" target="_blank">GitHub</a></li>
+    </ul>
+    <div class="card-body ">
+      <a class="card-link" href="#" (click)="showInfo = !showInfo">Close info</a>
+    </div>
+  </div>
+  <hr class="my-4">
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <div *ngIf="latestAnalysis.length === 0">
+      <div>
+        <div>
+          <p class="lead">Waiting for analysis</p>
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="latestAnalysis.length !== 0">
+      <p class="lead">Latest Tweets</p>
+      <div *ngFor="let latest of latestAnalysis">
+        <div class="card">
+          <div class="card-body">
+            <blockquote class="blockquote text-center card-text">
+              <p class="md-0">{{latest.message}}</p>
+              <footer class="blockquote-footer">{{latest.author}} at {{latest.metadata.date.$date|date}}</footer>
+            </blockquote>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li *ngFor="let report of latest.reports" class="list-group-item">
+              Sickness score: {{ report.score | number: '1.3'}}
+            </li>
+          </ul>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div *ngIf="topScoredAnalysis.length === 0">
+      <div>
+        <div>
+          <p class="lead">Fetching top scores</p>
+          <div mode="query"></div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="topScoredAnalysis.length !== 0">
+      <p class="lead">Top Scored Tweets</p>
+      <div *ngFor="let latest of topScoredAnalysis">
+        <div class="card">
+          <div class="card-body">
+            <blockquote class="blockquote card-text">
+              <p class="md-0">{{latest.message}}</p>
+              <footer class="blockquote-footer">{{latest.author}}</footer>
+            </blockquote>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Sickness score: {{latest.reports.score  | number: '1.3'}}
+            </li>
+          </ul>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
